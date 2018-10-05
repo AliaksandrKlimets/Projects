@@ -12,7 +12,7 @@ public class Runner implements Runnable {
             if (checker.isAllowed()) {
                 process(message);
             } else
-                System.out.println("Oops, limit is over " + Thread.currentThread().getName() + " cannot send message");
+                System.out.println("Oops, limit is over " + Thread.currentThread().getName() + " cannot send message. Try again.");
         }
     }
 
