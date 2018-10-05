@@ -23,6 +23,10 @@ public class Frequency implements FrequencyChecker {
         return instance;
     }
 
+    public void setMaxMessagesCount(int maxMessagesCount) {
+        this.maxMessagesCount = maxMessagesCount;
+    }
+
     private Frequency() {
         maxMessagesCount = 30;
         this.time = new Date().getTime();
