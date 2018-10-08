@@ -1,15 +1,18 @@
 package com.job.task;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Singleton class with lazy initialisation.
  */
 
 public class Frequency implements FrequencyChecker {
-    private int maxMessagesCount;
-    private long time;
-    private long messagesCount = 0;
+    private long maxMessagesCount;
+   // private List<InnerDate> dateList;
+    private List<Date> dateList;
     private static volatile Frequency instance;
 
     public static Frequency getInstance() {
@@ -29,7 +32,7 @@ public class Frequency implements FrequencyChecker {
 
     private Frequency() {
         maxMessagesCount = 30;
-        this.time = new Date().getTime();
+        this.dateList = new ArrayList<>();
     }
 
     /**
@@ -39,11 +42,14 @@ public class Frequency implements FrequencyChecker {
 
     @Override
     synchronized public boolean isAllowed() {
-        double messagesPerMinute = (double) (messagesCount + 1) / ((new Date().getTime() - time) / (double) 60000);
-        if (messagesPerMinute > maxMessagesCount) {
+        long messages = dateList.stream().filter(p ->( new Date().getTime()- p.getTime())<60000).count();
+        System.out.println(messages);
+        if (messages >= maxMessagesCount) {
+            dateList = dateList.stream().filter(p ->( new Date().getTime()- p.getTime())<60000).collect(Collectors.toList());
             return false;
         } else {
-            ++messagesCount;
+            dateList.add(new Date());
+           // dateList = dateList.stream().filter(p ->( new Date().getTime()- p.getDate().getTime())>60000).collect(Collectors.toList());
             return true;
         }
     }
