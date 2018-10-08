@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 public class Frequency implements FrequencyChecker {
     private long maxMessagesCount;
-    // private List<InnerDate> dateList;
     private List<Date> dateList;
     private static volatile Frequency instance;
 
