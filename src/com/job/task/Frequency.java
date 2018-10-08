@@ -42,14 +42,12 @@ public class Frequency implements FrequencyChecker {
 
     @Override
     synchronized public boolean isAllowed() {
-        long messages = dateList.stream().filter(p ->( new Date().getTime()- p.getTime())<60000).count();
-        System.out.println(messages);
-        if (messages >= maxMessagesCount) {
+        long messageCount = dateList.stream().filter(p ->( new Date().getTime()- p.getTime())<60000).count();
+        if (messageCount >= maxMessagesCount) {
             dateList = dateList.stream().filter(p ->( new Date().getTime()- p.getTime())<60000).collect(Collectors.toList());
             return false;
         } else {
             dateList.add(new Date());
-           // dateList = dateList.stream().filter(p ->( new Date().getTime()- p.getDate().getTime())>60000).collect(Collectors.toList());
             return true;
         }
     }
