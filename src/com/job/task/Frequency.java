@@ -11,14 +11,14 @@ import java.util.stream.Collectors;
 
 public class Frequency implements FrequencyChecker {
     private long maxMessagesCount;
-   // private List<InnerDate> dateList;
+    // private List<InnerDate> dateList;
     private List<Date> dateList;
     private static volatile Frequency instance;
 
     public static Frequency getInstance() {
-        if(instance == null){
-            synchronized (Frequency.class){
-                if(instance == null) {
+        if (instance == null) {
+            synchronized (Frequency.class) {
+                if (instance == null) {
                     instance = new Frequency();
                 }
             }
@@ -37,14 +37,16 @@ public class Frequency implements FrequencyChecker {
 
     /**
      * This method calculate the value of the messages per minute and compare it to maxMessagesCount value.
+     *
      * @return true if this value less than maxMessagesCount value, otherwise returns false.
      */
 
     @Override
     synchronized public boolean isAllowed() {
-        long messageCount = dateList.stream().filter(p ->( new Date().getTime()- p.getTime())<60000).count();
+        long currentTime = new Date().getTime();
+        long messageCount = dateList.stream().filter(p -> (currentTime - p.getTime()) < 60000).count();
         if (messageCount >= maxMessagesCount) {
-            dateList = dateList.stream().filter(p ->( new Date().getTime()- p.getTime())<60000).collect(Collectors.toList());
+            dateList = dateList.stream().filter(p -> (currentTime - p.getTime()) < 60000).collect(Collectors.toList());
             return false;
         } else {
             dateList.add(new Date());
